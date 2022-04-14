@@ -6,11 +6,12 @@ import iducs.springboot.boot.repository.MemoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MemoServiceImpl implements MemoService {
     final MemoRepository memoRepository;
-    // Injection using Constructor
+    // Injection using Constructor vs. @Autowired
     public MemoServiceImpl(MemoRepository memoRepository) {
         this.memoRepository = memoRepository;
     }
@@ -28,7 +29,16 @@ public class MemoServiceImpl implements MemoService {
 
     @Override
     public Memo readById(Long mno) {
-        return null;
+        Memo memo = null;
+        Optional<MemoEntity> result = memoRepository.findById(mno);
+        if(result.isPresent()) {
+            memo = Memo.builder()
+                    .mno(result.get().getMno())
+                    .memoText(result.get().getMemoText())
+                    .build();
+        }
+        return memo;
+
     }
 
     @Override
@@ -38,7 +48,11 @@ public class MemoServiceImpl implements MemoService {
 
     @Override
     public void update(Memo memo) {
-
+        MemoEntity entity = MemoEntity.builder()
+                .mno(memo.getMno())
+                .memoText(memo.getMemoText())
+                .build();
+        memoRepository.save(entity);
     }
 
     @Override
