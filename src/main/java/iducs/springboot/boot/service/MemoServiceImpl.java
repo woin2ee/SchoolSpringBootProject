@@ -38,7 +38,6 @@ public class MemoServiceImpl implements MemoService {
                     .build();
         }
         return memo;
-
     }
 
     @Override

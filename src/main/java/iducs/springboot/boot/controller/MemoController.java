@@ -1,4 +1,4 @@
-package iducs.springboot.boot.Controller;
+package iducs.springboot.boot.controller;
 
 import iducs.springboot.boot.domain.Memo;
 import iducs.springboot.boot.service.MemoService;
@@ -19,6 +19,7 @@ public class MemoController {
     public MemoController(MemoService memoService) {
         this.memoService = memoService;
     }
+
     // registration form
     @GetMapping("/regform")
     public String getRegform(Model model) {

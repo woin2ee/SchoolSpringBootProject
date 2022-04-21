@@ -1,4 +1,4 @@
-package iducs.springboot.boot.Controller;
+package iducs.springboot.boot.controller;
 
 import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.service.MemberService;
