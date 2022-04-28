@@ -17,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 public class MemberEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long seq;
     @Column(length = 30, nullable = false)
     private String id;

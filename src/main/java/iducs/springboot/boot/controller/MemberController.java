@@ -1,21 +1,22 @@
 package iducs.springboot.boot.controller;
 
 import iducs.springboot.boot.domain.Member;
-import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.service.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/members")
 public class MemberController {
-    @Autowired
+    private final
     MemberService memberService;
+
+    public MemberController(MemberService memberService) {
+        this.memberService = memberService;
+    }
 
     @GetMapping("regform")
     public String getRegform(Model model) {
@@ -27,9 +28,59 @@ public class MemberController {
     @PostMapping("")
     public String postMember(@ModelAttribute("member") Member member, Model model) {
         memberService.create(member);
-        model.addAttribute("member", member);
-        return "/members/info";
+        return "redirect:/members";
     }
+
+    @GetMapping("")
+    public String getMembers(Model model) {
+        List<Member> members = memberService.readAll();
+        model.addAttribute("list", members);
+        return "/members/members";
+    }
+
+    // /members/일련번호 : PathVariable 매핑해서 접근
+    @GetMapping("/{idx}")
+    public String getMember(@PathVariable("idx") Long seq, Model model) {
+        Member member = memberService.readById(seq);
+        model.addAttribute("member", member);
+        return "/members/member";
+    }
+
+    @GetMapping("/{idx}/upform")
+    public String getUpform(@PathVariable("idx") Long seq, Model model) {
+        Member member = memberService.readById(seq);
+        model.addAttribute("member", member);
+        return "/members/upform";
+    }
+
+    @PutMapping("{idx}")
+    public String putMember(@ModelAttribute("member") Member member, Model model) {
+        memberService.update(member);
+        model.addAttribute(member);
+        return "/members/member";
+    }
+
+    @GetMapping("/{idx}/delform")
+    public String getDelform(@PathVariable("idx") Long seq, Model model) {
+        Member member = memberService.readById(seq);
+        model.addAttribute(member);
+        return "/members/delform";
+    }
+
+    // Model 을 이용한 방법
+    @DeleteMapping("{idx}")
+    public String delMember(@ModelAttribute("member") Member member, Model model) {
+        memberService.delete(member);
+        return "redirect:/members";
+    }
+//    // Seq 를 이용한 방법
+//    @DeleteMapping("{idx}")
+//    public String delMember(@PathVariable("idx") Long seq, Model model) {
+//        Member member = memberService.readById(seq);
+//        memberService.delete(member);
+//        return "redirect:/members";
+//    }
+
 
 
 

@@ -5,8 +5,10 @@ import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.entity.MemoEntity;
 import iducs.springboot.boot.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +33,18 @@ public class MemberServiceImpl implements MemberService {
                 .build();
     }
 
+    private Member entityToDto(MemberEntity entity) {
+        return Member.builder()
+                .seq(entity.getSeq())
+                .id(entity.getId())
+                .pw(entity.getPw())
+                .name(entity.getName())
+                .email(entity.getEmail())
+                .phone(entity.getPhone())
+                .address(entity.getAddress())
+                .build();
+    }
+
     @Override
     public void create(Member member) {
         MemberEntity entity = dtoToEntity(member);
@@ -39,22 +53,40 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Member readById(Long seq) {
-        return null;
+        Member member = null;
+
+        Optional<MemberEntity> entity = memberRepository.findById(seq);
+        if(entity.isPresent()) {
+            member = entityToDto(entity.get());
+        }
+
+//        // Other Solution
+//        MemberEntity entity = memberRepository.getById(seq);
+//        member = entityToDto(entity);
+
+        return member;
     }
 
     @Override
     public List<Member> readAll() {
-        return null;
+        List<Member> members = new ArrayList<>();
+        List<MemberEntity> entities = memberRepository.findAll();
+        for (MemberEntity entity : entities) {
+            members.add(entityToDto(entity));
+        }
+        return members;
     }
 
     @Override
     public void update(Member member) {
-
+        MemberEntity entity = dtoToEntity(member);
+        memberRepository.save(entity);
     }
 
     @Override
     public void delete(Member member) {
-
+        MemberEntity entity = dtoToEntity(member);
+        memberRepository.deleteById(entity.getSeq());
     }
 
     @Override
