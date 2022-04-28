@@ -4,9 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+// Spring Data 관련 Annotations
 @Entity
 @Table(name="tbl_memo")
 
+// Lombok 관련 Annotations
 @ToString
 @Getter
 @Setter

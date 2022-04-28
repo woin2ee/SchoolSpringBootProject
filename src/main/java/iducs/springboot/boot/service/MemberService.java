@@ -1,20 +1,18 @@
 package iducs.springboot.boot.service;
 
+import iducs.springboot.boot.domain.Member;
 import iducs.springboot.boot.entity.MemberEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface MemberService {
-    int create(MemberEntity member);
+    void create(Member member);
+    Member readById(Long seq);
+    List<Member> readAll();
+    void update(Member member);
+    void delete(Member member);
 
-    Optional<MemberEntity> readById(Long seq);
-
-    Optional<MemberEntity> readId(String id);
-
-    List<MemberEntity> readAll();
-
-    int update(MemberEntity member);
-
-    int delete(MemberEntity member);
+    Member readByName(Member member);
+    Member readByEmail(String email);
 }
