@@ -30,14 +30,13 @@ public class MemoController {
     public String postMemo(@ModelAttribute("memo") Memo memo, Model model ) {
         memoService.create(memo);
         model.addAttribute("memo", memo);
-        return "/memos/memo";
+        return "redirect:/memos";
     }
     @GetMapping("")
     public String getMemos(Model model) {
         List<Memo> memos = memoService.readAll();
-        //List<MemoEntity> memos = memoService.findAll();
         model.addAttribute("list", memos);
-        return "/memos/home";
+        return "/memos/memos";
     }
     @GetMapping("/{idx}")
     public String getMemo(@PathVariable("idx") Long mno, Model model) {
@@ -45,6 +44,7 @@ public class MemoController {
         model.addAttribute("memo", memo);
         return "/memos/memo";
     }
+
     // localhost:8888/memos/13/upform
     @GetMapping("/{idx}/upform")
     public String getUpform(@PathVariable("idx") Long mno, Model model) {
@@ -57,5 +57,17 @@ public class MemoController {
         memoService.update(memo);
         model.addAttribute("memo", memo);
         return "/memos/memo";
+    }
+
+    @GetMapping("/{idx}/delform")
+    public String getDelform(@PathVariable("idx") Long mno, Model model) {
+        Memo memo = memoService.readById(mno);
+        model.addAttribute("memo", memo);
+        return "/memos/delform";
+    }
+    @DeleteMapping("/{idx}")
+    public String delMemo(@ModelAttribute("memo") Memo memo, Model model) {
+        memoService.delete(memo);
+        return "redirect:/memos";
     }
 }
