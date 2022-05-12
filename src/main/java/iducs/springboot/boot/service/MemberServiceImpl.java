@@ -1,16 +1,22 @@
 package iducs.springboot.boot.service;
 
 import iducs.springboot.boot.domain.Member;
+import iducs.springboot.boot.domain.PageRequestDTO;
+import iducs.springboot.boot.domain.PageResultDTO;
 import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.entity.MemoEntity;
 import iducs.springboot.boot.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -97,5 +103,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member readByEmail(String email) {
         return null;
+    }
+
+    @Override
+    public PageResultDTO<Member, MemberEntity> readListBy(PageRequestDTO pageRequestDTO) {
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("seq").ascending());
+        // BooleanBuilder booleanBuilder = findByCondition(pageRequestDTO);
+        // Page<MemberEntity> result = memberRepository.findAll(booleanBuilder, pageable);
+        Page<MemberEntity> result = memberRepository.findAll(pageable);
+        Function<MemberEntity, Member> fn = (entity -> entityToDto(entity));
+        return new PageResultDTO<>(result, fn);
     }
 }

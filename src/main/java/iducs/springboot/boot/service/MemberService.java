@@ -1,6 +1,8 @@
 package iducs.springboot.boot.service;
 
 import iducs.springboot.boot.domain.Member;
+import iducs.springboot.boot.domain.PageRequestDTO;
+import iducs.springboot.boot.domain.PageResultDTO;
 import iducs.springboot.boot.entity.MemberEntity;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface MemberService {
 
     Member readByName(Member member);
     Member readByEmail(String email);
+
+    PageResultDTO<Member, MemberEntity> readListBy(PageRequestDTO pageRequestDTO);
 }

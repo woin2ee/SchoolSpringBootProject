@@ -1,6 +1,7 @@
 package iducs.springboot.boot.controller;
 
 import iducs.springboot.boot.domain.Member;
+import iducs.springboot.boot.domain.PageRequestDTO;
 import iducs.springboot.boot.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,10 +33,11 @@ public class MemberController {
     }
 
     @GetMapping("")
-    public String getMembers(Model model) {
-        List<Member> members = memberService.readAll();
-        model.addAttribute("list", members);
-        return "/members/members";
+    public String getMembers(PageRequestDTO pageRequestDTO, Model model) {
+//        List<Member> members = memberService.readAll();
+//        model.addAttribute("members", members);
+        model.addAttribute("list", memberService.readListBy(pageRequestDTO));
+        return "members/members";
     }
 
     // /members/일련번호 : PathVariable 매핑해서 접근
