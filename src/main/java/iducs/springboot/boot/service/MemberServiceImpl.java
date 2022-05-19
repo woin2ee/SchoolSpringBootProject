@@ -1,10 +1,13 @@
 package iducs.springboot.boot.service;
 
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import iducs.springboot.boot.domain.Member;
 import iducs.springboot.boot.domain.PageRequestDTO;
 import iducs.springboot.boot.domain.PageResultDTO;
 import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.entity.MemoEntity;
+import iducs.springboot.boot.entity.QMemberEntity;
 import iducs.springboot.boot.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -108,10 +111,40 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public PageResultDTO<Member, MemberEntity> readListBy(PageRequestDTO pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable(Sort.by("seq").ascending());
-        // BooleanBuilder booleanBuilder = findByCondition(pageRequestDTO);
-        // Page<MemberEntity> result = memberRepository.findAll(booleanBuilder, pageable);
-        Page<MemberEntity> result = memberRepository.findAll(pageable);
+        // 조건을 추가한 findAll
+        BooleanBuilder booleanBuilder = findByCondition(pageRequestDTO);
+        Page<MemberEntity> result = memberRepository.findAll(booleanBuilder, pageable);
+        // 모두 가져오는 findAll
+//        Page<MemberEntity> result = memberRepository.findAll(pageable);
         Function<MemberEntity, Member> fn = (entity -> entityToDto(entity));
         return new PageResultDTO<>(result, fn);
     }
+
+    private BooleanBuilder findByCondition(PageRequestDTO pageRequestDTO) {
+        String type = pageRequestDTO.getType();
+        BooleanBuilder booleanBuilder = new BooleanBuilder();
+
+        QMemberEntity qMemberEntity = QMemberEntity.memberEntity;
+
+        BooleanExpression expression = qMemberEntity.seq.gt(0L); // where seq > 0 and title == "ti"
+        booleanBuilder.and(expression);
+
+        if(type == null || type.trim().length() == 0) {
+            return booleanBuilder;
+        }
+
+        String keyword = pageRequestDTO.getKeyword();
+
+        BooleanBuilder conditionBuilder = new BooleanBuilder();
+        if(type.contains("e")) // email로 검색
+            conditionBuilder.or(qMemberEntity.email.contains(keyword));
+        if(type.contains("p")) // phone로 검색
+            conditionBuilder.or(qMemberEntity.phone.contains(keyword));
+        if(type.contains("a")) // address로 검색
+            conditionBuilder.or(qMemberEntity.address.contains(keyword));
+        booleanBuilder.and(conditionBuilder);
+        return booleanBuilder; // 완성된 조건 or 술어(predicate)
+    }
+
+
 }

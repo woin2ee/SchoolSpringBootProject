@@ -40,7 +40,7 @@ public class PageResultDTO<DTO, EN> { // Generics
         int tempEnd = (int)(Math.ceil(currentPage/(double) sizeOfPage)) * sizeOfPage;
 
         startPage = tempEnd - (sizeOfPage - 1);
-        endPage = (totalPage > tempEnd) ? tempEnd : totalPage;
+        endPage = Math.min(totalPage, tempEnd);
         isPrevPage = startPage > 1;
         isNextPage = totalPage > tempEnd;
 
