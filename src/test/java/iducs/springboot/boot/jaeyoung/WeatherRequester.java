@@ -1,4 +1,4 @@
-package iducs.springboot.boot;
+package iducs.springboot.boot.jaeyoung;
 
 import java.util.List;
 

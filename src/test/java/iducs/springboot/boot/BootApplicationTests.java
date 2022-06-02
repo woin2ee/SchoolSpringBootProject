@@ -27,7 +27,7 @@ class BootApplicationTests {
 	@Test
 	void testMemberInitialize() {
 		IntStream.rangeClosed(1, 50).forEach(i -> {
-			MemberEntity entity = MemberEntity.builder()
+			MemberEntity memberEntity = MemberEntity.builder()
 					.id("id " + i)
 					.pw("pw " + i)
 					.name("name " + i)
@@ -35,7 +35,7 @@ class BootApplicationTests {
 					.phone("phone " + new Random().nextInt(50))
 					.address("address " + i)
 					.build();
-			memberRepository.save(entity);
+			memberRepository.save(memberEntity);
 		});
 	}
 

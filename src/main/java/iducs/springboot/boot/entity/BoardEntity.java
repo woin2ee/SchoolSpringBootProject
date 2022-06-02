@@ -19,6 +19,14 @@ public class BoardEntity extends BaseEntity {
     private String title;
     private String content;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private MemberEntity writer; // 연관 관계 지정
+
+    public void changeTitle(String title) {
+        this.title = title;
+    }
+
+    public void changeContent(String content) {
+        this.content = content;
+    }
 }

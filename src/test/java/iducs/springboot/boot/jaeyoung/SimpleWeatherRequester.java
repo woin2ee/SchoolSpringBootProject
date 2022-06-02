@@ -1,4 +1,4 @@
-package iducs.springboot.boot;
+package iducs.springboot.boot.jaeyoung;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;

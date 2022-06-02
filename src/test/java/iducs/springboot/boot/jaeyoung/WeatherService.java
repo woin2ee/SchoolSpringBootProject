@@ -1,4 +1,4 @@
-package iducs.springboot.boot;
+package iducs.springboot.boot.jaeyoung;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

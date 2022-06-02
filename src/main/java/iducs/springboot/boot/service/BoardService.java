@@ -7,24 +7,28 @@ import iducs.springboot.boot.entity.BoardEntity;
 import iducs.springboot.boot.entity.MemberEntity;
 
 public interface BoardService {
-    Long register(Board dto);
+    Long register(Board board);
     PageResultDTO<Board, Object[]> getList(PageRequestDTO pageRequestDTO);
 
-    default BoardEntity dtoToEntity(Board dto) {
-        MemberEntity member = MemberEntity.builder()
-                .seq(dto.getWriterSeq())
+    Board getById(Long bno);
+    Long modify(Board board);
+    void deleteWithRepliesById(Long bno);
+
+    default BoardEntity dtoToEntity(Board board) {
+        MemberEntity memberEntity = MemberEntity.builder()
+                .seq(board.getWriterSeq())
                 .build();
-        BoardEntity board = BoardEntity.builder()
-                .bno(dto.getBno())
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .writer(member)
+        BoardEntity boardEntity = BoardEntity.builder()
+                .bno(board.getBno())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .writer(memberEntity)
                 .build();
-        return board;
+        return boardEntity;
     }
 
     default Board entityToDto(BoardEntity entity, MemberEntity member, Long replyCount) {
-        Board dto = Board.builder()
+        Board board = Board.builder()
                 .bno(entity.getBno())
                 .title(entity.getTitle())
                 .content(entity.getContent())
@@ -36,6 +40,6 @@ public interface BoardService {
                 .modDate(entity.getModDate())
                 .replyCount(replyCount.intValue())
                 .build();
-        return dto;
+        return board;
     }
 }
