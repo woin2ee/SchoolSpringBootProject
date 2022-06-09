@@ -1,11 +1,11 @@
 package iducs.springboot.boot.controller;
 
+import iducs.springboot.boot.domain.Board;
 import iducs.springboot.boot.domain.PageRequestDTO;
 import iducs.springboot.boot.service.BoardService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/boards")
@@ -19,7 +19,24 @@ public class BoardController {
     @GetMapping("")
     public String getBoards(PageRequestDTO pageRequestDTO, Model model) {
         model.addAttribute("list", boardService.getList(pageRequestDTO));
-        return "/boards/boards";
+        return "/boards/list";
     }
 
+    @GetMapping("/regform")
+    public String getRegform(Model model) {
+        model.addAttribute("dto", Board.builder().build());
+        return "/boards/regform";
+    }
+
+    @PostMapping("")
+    public String postBoard(@ModelAttribute("board") Board board) {
+        boardService.register(board);
+        return "redirect:/boards"; // get 방식으로 해당 URI 요청
+    }
+
+    @GetMapping("/{bno}")
+    public String getBoard(@PathVariable("bno") Long bno, Model model) {
+        model.addAttribute("dto", boardService.getById(bno));
+        return "/boards/read";
+    }
 }

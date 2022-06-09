@@ -24,7 +24,7 @@ public class BoardServiceTest {
     BoardRepository boardRepository;
 
 //    @Test
-    public void testRegister() {
+    public void testInitBoards() {
         IntStream.rangeClosed(1, 47).forEach(i -> {
             Long seqLong = (long) new Random().nextInt(50);
             seqLong = (seqLong == 0) ? 1 : seqLong;
@@ -47,7 +47,7 @@ public class BoardServiceTest {
             System.out.println(dto.getBno() + " : " + dto.getTitle());
     }
 
-    @Transactional
+//    @Transactional
 //    @Test
     public void testLazyLoading() {
         Optional<BoardEntity> result = boardRepository.findById(10L);
@@ -55,7 +55,7 @@ public class BoardServiceTest {
         System.out.println(boardEntity.getWriter());
     }
 
-    @Test
+//    @Test
     public void testDeleteWithRepliesById() {
         Long bno = 1L;
         boardService.deleteWithRepliesById(bno);

@@ -1,6 +1,5 @@
 package iducs.springboot.boot;
 
-import iducs.springboot.boot.domain.Member;
 import iducs.springboot.boot.entity.MemberEntity;
 import iducs.springboot.boot.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -31,9 +30,9 @@ class BootApplicationTests {
 					.id("id " + i)
 					.pw("pw " + i)
 					.name("name " + i)
-					.email("email " + new Random().nextInt(100))
+					.email("email" + i + "@induk.ac.kr")
 					.phone("phone " + new Random().nextInt(50))
-					.address("address " + i)
+					.address("address " + new Random().nextInt(50))
 					.build();
 			memberRepository.save(memberEntity);
 		});
